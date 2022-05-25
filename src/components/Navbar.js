@@ -1,0 +1,38 @@
+import React, { Component } from 'react'
+import { AuthContext } from '../contexts/AuthContext';
+import { ThemeContext } from '../contexts/ThemeContext';
+
+
+class Navbar extends Component {
+    // maniére donc on utilise context typa dans un component, le ThemeContext que nous avons créer dans le fichier ThemeCOntext
+    //  static contextType = ThemeContext
+    render() {
+        console.log(this.context)
+
+        return (
+            <AuthContext.Consumer>{(authContext) => (
+                // consume context in a component
+                <ThemeContext.Consumer>{(themeContext) => {
+                    const { isAuthenticated, toggleAuth} = authContext
+                    const { isLightTheme, light, dark } = themeContext;
+                    const theme = isLightTheme ? light : dark;
+                    return (
+                        <nav style={{ background: theme.ui, color: theme.syntax }}>
+                            <h1>Context App</h1>
+                            <div onClick={toggleAuth}>
+                                {isAuthenticated ? 'logged in' : 'logged out'}
+                            </div>
+                            <ul>
+                                <li>Home</li>
+                                <li>About</li>
+                                <li>Contact</li>
+                            </ul>
+                        </nav>
+                    )
+                }}</ThemeContext.Consumer>
+            )}</AuthContext.Consumer>
+        );
+    }
+}
+
+export default Navbar;
